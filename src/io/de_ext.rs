@@ -1,17 +1,41 @@
 use serde::de::DeserializeOwned;
 
+/// Extend with methods for deserializing readable contents.
 pub trait DeExt {
+    /// Deserialize self as a json string.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use std::collections::HashMap;
+    /// use chain_ext::io::DeExt;
+    ///
+    /// let string = r###"{"key": "value"}"###;
+    /// let result: HashMap<String, String> = string.as_bytes().de_json().unwrap();
+    /// ```
     #[cfg(feature = "serde_json")]
     fn de_json<T>(self) -> Result<T, serde_json::Error>
     where
         T: DeserializeOwned;
 
+    /// Deserialize self as a yaml string.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use std::collections::HashMap;
+    /// use chain_ext::io::DeExt;
+    ///
+    /// let string = r###"key: value"###;
+    /// let result: HashMap<String, String> = string.as_bytes().de_yaml().unwrap();
+    /// ```
     #[cfg(feature = "serde_yaml")]
     fn de_yaml<T>(self) -> Result<T, serde_yaml::Error>
     where
         T: DeserializeOwned;
 }
 
+/// Extend [std::io::Read] objects with de_* methods.
 impl<R: std::io::Read> DeExt for R {
     #[cfg(feature = "serde_json")]
     fn de_json<T>(self) -> Result<T, serde_json::Error>

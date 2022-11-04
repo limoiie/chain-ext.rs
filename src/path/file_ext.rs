@@ -1,6 +1,7 @@
 use std::fs::{File, OpenOptions};
 use std::path::Path;
 
+/// Extend path-like objects with methods to open, create or remove a file.
 pub trait FileExt {
     fn open(&self) -> std::io::Result<File>;
     fn open_with(&self, option: OpenOptions) -> std::io::Result<File>;
@@ -9,18 +10,22 @@ pub trait FileExt {
 }
 
 impl<P: AsRef<Path>> FileExt for P {
+    /// Open file at the path.
     fn open(&self) -> std::io::Result<File> {
         File::open(self)
     }
 
+    /// Open file with given options at the path.
     fn open_with(&self, option: OpenOptions) -> std::io::Result<File> {
         option.open(self)
     }
 
+    /// Create file at the path.
     fn create(&self) -> std::io::Result<File> {
         File::create(self)
     }
 
+    /// Delete file at the path.
     fn remove(&self) -> std::io::Result<()> {
         std::fs::remove_file(self)
     }
