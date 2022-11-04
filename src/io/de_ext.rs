@@ -37,7 +37,7 @@ mod tests {
 
     #[test]
     fn test_de_json() {
-        let json_string = r###"{name: limo, type: real}"###;
+        let json_string = r###"{"name": "fake", "type": "real"}"###;
         let m: HashMap<String, String> = json_string.as_bytes().de_json().unwrap();
 
         assert_eq!(
