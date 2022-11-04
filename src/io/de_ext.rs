@@ -1,6 +1,11 @@
 use serde::de::DeserializeOwned;
 
 pub trait DeExt {
+    #[cfg(feature = "serde_json")]
+    fn de_json<T>(self) -> Result<T, serde_json::Error>
+    where
+        T: DeserializeOwned;
+
     #[cfg(feature = "serde_yaml")]
     fn de_yaml<T>(self) -> Result<T, serde_yaml::Error>
     where
@@ -8,6 +13,14 @@ pub trait DeExt {
 }
 
 impl<R: std::io::Read> DeExt for R {
+    #[cfg(feature = "serde_json")]
+    fn de_json<T>(self) -> Result<T, serde_json::Error>
+    where
+        T: DeserializeOwned,
+    {
+        serde_json::from_reader(self)
+    }
+
     #[cfg(feature = "serde_yaml")]
     fn de_yaml<T>(self) -> Result<T, serde_yaml::Error>
     where
