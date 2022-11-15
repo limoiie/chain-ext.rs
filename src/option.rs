@@ -65,6 +65,14 @@ impl<T> OptionExt<T> for Option<T> {
     }
 }
 
+trait OptionWrapExt: Sized {
+    fn wrap_some(self) -> Option<Self> {
+        Some(self)
+    }
+}
+
+impl<T: Sized> OptionWrapExt for T {}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -84,10 +92,8 @@ mod tests {
     }
 
     #[test]
-    fn test_pair() {
-        assert_eq!(Some(10).pair(Some(20)), Some((10, 20)));
-        assert_eq!(Some(10).pair(None::<i32>), None);
-        assert_eq!(None::<i32>.pair(Some(10)), None);
-        assert_eq!(None::<i32>.pair(None::<i32>), None);
+    fn test_some() {
+        assert_eq!(Some(10), 10.wrap_some());
+        assert_eq!(Some(10), Ok::<i32, i32>(10).ok());
     }
 }
