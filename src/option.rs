@@ -39,6 +39,7 @@ pub trait OptionExt<T> {
     /// assert_eq!(Some(10).pair(None::<u32>), None);
     /// assert_eq!(None::<i32>.pair(None::<u32>), None);
     /// ```
+    #[deprecated(since="0.2.0", note="Please use `Option::zip` instead.")]
     fn pair<S>(self, other: Option<S>) -> Option<(T, S)>;
 }
 
@@ -58,10 +59,7 @@ impl<T> OptionExt<T> for Option<T> {
     }
 
     fn pair<S>(self, other: Option<S>) -> Option<(T, S)> {
-        match (self, other) {
-            (Some(this), Some(that)) => Some((this, that)),
-            _ => None,
-        }
+        self.zip(other)
     }
 }
 
