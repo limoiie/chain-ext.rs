@@ -5,6 +5,7 @@ use std::marker::Destruct;
 pub mod io;
 pub mod option;
 pub mod path;
+pub mod result;
 
 #[cfg(feature = "mongodb")]
 pub mod mongodb;
