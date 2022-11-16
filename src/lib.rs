@@ -1,7 +1,3 @@
-#![feature(const_trait_impl)]
-
-use std::marker::Destruct;
-
 pub mod io;
 pub mod option;
 pub mod path;
@@ -16,16 +12,14 @@ pub mod mongodb_gridfs;
 pub trait Apply {
     fn apply<F, R>(self, f: F) -> R
     where
-        F: ~const FnOnce(Self) -> R,
-        F: ~const Destruct,
+        F: FnOnce(Self) -> R,
         Self: Sized;
 }
 
 impl<T: Sized> Apply for T {
     fn apply<F, R>(self, f: F) -> R
     where
-        F: ~const FnOnce(Self) -> R,
-        F: ~const Destruct,
+        F: FnOnce(Self) -> R,
     {
         f(self)
     }
